@@ -10,7 +10,7 @@ void setup() {
   textFont(myFont);
 }
 void draw() {
-  //hai
+  //gray
   fill(70,70,70);
   rect(0,0,480,480);
   //tya
