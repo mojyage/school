@@ -55,5 +55,5 @@ void draw() {
   fill(0,0,0);
   ellipse(347,213,5,5);
   ellipse(365,213,5,5);
-  
+  noLoop();
 }
