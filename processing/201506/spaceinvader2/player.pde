@@ -4,7 +4,6 @@ class player extends moveObject
   boolean moveLeftFlag   = false;
   boolean moveRightFlag  = false;
   boolean shotPlayerFlag = false;
-  bullet myBullet        = null;
 
   player(int x, int y, int size)
   {
@@ -15,12 +14,12 @@ class player extends moveObject
     shotPlayerFlag = false;
   }
 
-  void process()
+  bullet process()
   {
     move();
     paint();
-    makeBullet();
-    shotMove();
+    return makeBullet();
+    //shotMove();
   }
 
   void move()
@@ -33,34 +32,21 @@ class player extends moveObject
       moveX(speed);
     }
   }
-  
+
   void paint()
   {
     fill(255, 255, 255);
     ellipse(x, y, size, size);
   }
-  
-  void makeBullet()
+
+  bullet makeBullet()
   {
-    if (myBullet == null && shotPlayerFlag == true)
+    if (shotPlayerFlag == true)
     {
-      myBullet = new bullet(super.x, super.y, 5, false);
+      shotPlayerFlag = false;
+      return new bullet(x, y, 5, false);
     }
+    return null;
   }
-
-  void shotMove()
-  {
-    if (myBullet == null)
-    {
-      return;
-    }
-
-    boolean bulletState = myBullet.process();
-
-    if (bulletState == false)
-    {
-      myBullet = null;
-    }
-  } 
 }
 

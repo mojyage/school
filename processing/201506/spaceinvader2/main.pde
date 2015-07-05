@@ -5,7 +5,8 @@ int count = 0;
 int enemyValue = 10;
 
 player myPlayer = null;
-enemy[] myEnemy = new enemy[enemyValue];
+ArrayList<enemy> enemyList = new ArrayList<enemy>();
+ArrayList<bullet> bulletList = new ArrayList<bullet>();
 
 void setup() {
   size(width, height);
@@ -19,20 +20,88 @@ void setup() {
 
   for (int i = 0; i < enemyValue; i++)
   {
-    myEnemy[i] = new enemy(50 + (i * 40), 50, 40);
+    enemyList.add(new enemy(50 + (i * 40), 50, 40));
   }
 
-  count    = 0;
+  count = 0;
 }
 
 void draw() {
   background(0, 0, 0);
-  myPlayer.process();
+
+  playerTurn();
+  enemyTurn();
+  bulletTurn();
+
+  count++;
+}
+
+void playerTurn()
+{
+  bullet myBullet = myPlayer.process();
+  boolean bulletState = isNullBullet(myBullet);
+  if (bulletState == false)
+  {
+    bulletList.add(myBullet);
+  }
+}
+
+void enemyTurn()
+{
+  enemy myEnemy       = null;
+  bullet myBullet     = null;
+  boolean bulletState = true;
   for (int i = 0; i < enemyValue; i++)
   {
-    myEnemy[i].process();
+    myEnemy     = enemyList.get(i);
+    myBullet    = myEnemy.process();
+    bulletState = isNullBullet(myBullet);
+    if (bulletState == false)
+    {
+      bulletList.add(myBullet);
+    }
   }
-  count++;
+}
+
+void bulletTurn()
+{
+  bullet myBullet     = null;
+  boolean bulletState = true;
+  for (int i = 0; i < bulletList.size (); i++) {
+    myBullet = bulletList.get(i);
+    bulletState = myBullet.process();
+
+    if (bulletState == false)
+    {
+      bulletList.remove(i);
+    }
+  }
+}
+
+boolean isNullBullet(bullet b)
+{
+  if (b == null)
+  {
+    return true;
+  }
+  return false;
+}
+
+boolean isLivePlayerBullet()
+{
+  bullet myBullet = null;
+  for (int i = 0; i < bulletList.size (); i++) {
+    myBullet = bulletList.get(i);
+    if (myBullet.enemyFlag == false)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+boolean collisionCheck(int myX, int myY, int myR, int youX, int youY, int youR) {
+  return (pow(myX - youX, 2) + pow(myY - youY, 2)) <= pow(myR / 2 + youR / 2, 2);
 }
 
 void keyPressed()
@@ -49,7 +118,10 @@ void keyPressed()
 
   if (key == ' ')
   {
-    myPlayer.shotPlayerFlag = true;
+    if (isLivePlayerBullet() == false)
+    {
+      myPlayer.shotPlayerFlag = true;
+    }
   }
 }
 

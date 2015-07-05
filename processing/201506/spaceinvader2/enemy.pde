@@ -3,12 +3,10 @@ class enemy extends moveObject
   PImage image;
   int speed               = 10;
   int forwardMoveValue    = 30;
-  int moveIntervalCount   = 50;
+  int moveIntervalCount   = 5;
   int shotIntervalCount   = 60;
   boolean moveRightFlag   = false;
   boolean moveForwardFrag = false;
-
-  ArrayList<bullet> bulletList = new ArrayList<bullet>();
 
   enemy(int x, int y, int size)
   {
@@ -19,13 +17,12 @@ class enemy extends moveObject
     shotIntervalCount -= (int)random(-20, 20);
   }
 
-  void process()
+  bullet process()
   {
     move();
     moveForward();
     paint();
-    makeBullet();
-    shotMove();
+    return makeBullet();
   }
 
   void move()
@@ -47,11 +44,11 @@ class enemy extends moveObject
 
   void moveForward()
   {
-    if (moveForwardFrag != true)
+    if (moveForwardFrag == false)
     {
       return;
     }
-    
+
     if (x < 50 || (width - 50) < x)
     {
       moveY(forwardMoveValue);
@@ -66,28 +63,13 @@ class enemy extends moveObject
     image(image, x - (size / 2), y - (size / 2), size, size);
   }
 
-  void makeBullet()
+  bullet makeBullet()
   {
-    if (count % shotIntervalCount != 0)
+    if (count % shotIntervalCount == 0 && count > 20)
     {
-      return;
+      return new bullet(x, y, 5, true);
     }
-    bullet myBullet = new bullet(x, y, 5, true);
-    bulletList.add(myBullet);
-  }
-
-  void shotMove()
-  {
-    for (int i = 0; i < bulletList.size (); i++) {
-      bullet myBullet = bulletList.get(i);
-
-      boolean bulletState = myBullet.process();
-
-      if (bulletState == false)
-      {
-        bulletList.remove(i);
-      }
-    }
+    return null;
   }
 }
 
