@@ -24,6 +24,17 @@ int moveEVy = 30;
 int moveCount = 0;
 boolean enemyFlag = true;
 
+
+
+///
+int enemyX1 = 90;
+int enemyY1 = 30;
+int moveEVx1 = 10;
+boolean enemyFlag1 = true;
+///
+
+
+
 //shot
 int shotEx = enemyX;
 int shotEy = enemyY;
@@ -32,6 +43,14 @@ int shotEVx = 0;
 int shotEVy = 5;
 int shotECount = 0;
 boolean shotEFlag = false;
+
+
+///
+int shotEx1 = enemyX1;
+int shotEy1 = enemyY1;
+boolean shotEFlag1 = false;
+///
+
 
 void setup(){
     size(480,480);
@@ -53,9 +72,9 @@ boolean collisionCheck(int myX, int myY, int myR, int youX, int youY, int youR) 
 void playerMove(){
     if(playerFlag){
         if(moveLeft)
-            playerX -= 3;
+            playerX -= 7;
         if(moveRight)
-            playerX += 3; 
+            playerX += 7; 
         fill(255);
         ellipse(playerX, playerY, playerSize, playerSize);
     }
@@ -65,11 +84,23 @@ void playerShot(){
     fill(255, 0, 0);
     if(shotPFlag){
         shotPy += shotPVy;
+        // atarihantei
         if(collisionCheck(shotPx, shotPy, shotPr, enemyX, enemyY, enemyR)){
             shotPFlag = false;
             enemyFlag = false;  
             shotEFlag = false;
         }
+        
+        
+        ///
+        if(collisionCheck(shotPx, shotPy, shotPr, enemyX1, enemyY1, enemyR)){
+            shotPFlag = false;
+            enemyFlag1 = false;  
+            shotEFlag = false;
+        }
+        ///
+        
+        
         if(shotPy < 0)
             shotPFlag = false;
         ellipse(shotPx, shotPy, shotPr, shotPr);  
@@ -80,29 +111,62 @@ void playerShot(){
 //-------------------ENEMY------------------------
 void enemyMove() {
     if(enemyFlag){
-        if (moveCount % 20 == 0) {
+        if (moveCount % 10 == 0) {
             enemyX += moveEVx;
-            if (enemyX < 50 || 400 < enemyX){
+            if (enemyX < 20 || 460 < enemyX){
                 enemyY += moveEVy;
                 enemyX -= moveEVx;
                 moveEVx *= -1;
             }     
         }
-        moveCount++;
         fill(0, 255, 0);
         image(img, enemyX - (enemyR / 2), enemyY - enemyR / 2, enemyR, enemyR);
+    }
+    
+    
+    ///
+    if(enemyFlag1){
+        if (moveCount % 10 == 0) {
+            enemyX1 += moveEVx1;
+            if (enemyX1 < 20 || 460 < enemyX1){
+                enemyY1 += moveEVy;
+                enemyX1 -= moveEVx1;
+                moveEVx1 *= -1;
+            }     
+        }
+        fill(0, 255, 0);
+        image(img, enemyX1 - (enemyR / 2), enemyY1 - enemyR / 2, enemyR, enemyR);
+    }
+    ///
+    
+    
+    
+    if(enemyFlag || enemyFlag1){
+      moveCount++;
     }
 }
 
 void enemyShot() {
-    if ((shotECount = ++shotECount % 150) == 0 && enemyFlag && !shotEFlag) {
+    if ((shotECount = ++shotECount % 35) == 0 && enemyFlag && !shotEFlag) {
         shotEFlag = true;
         shotEx = enemyX;
         shotEy = enemyY;
 
     }
+    
+    
+    ///
+    if ((shotECount = ++shotECount % 35) == 0 && enemyFlag1 && !shotEFlag1) {
+        shotEFlag1 = true;
+        shotEx1 = enemyX1;
+        shotEy1 = enemyY1;
+
+    }
+    ///
+    
+    
     if (shotEFlag){
-        shotEy+= shotEVy;
+        shotEy += shotEVy;
         if (collisionCheck(shotEx, shotEy, shotEr, playerX, playerY, playerSize)){
             playerFlag = false;
             shotEFlag = false;
@@ -112,6 +176,22 @@ void enemyShot() {
             shotEFlag = false;
         ellipse(shotEx, shotEy, shotEr, shotEr);
     }
+    
+    
+    
+    ///
+    if (shotEFlag1){
+        shotEy1 += shotEVy;
+        if (collisionCheck(shotEx1, shotEy1, shotEr, playerX, playerY, playerSize)){
+            playerFlag = false;
+            shotEFlag1 = false;
+            shotPFlag = false;
+        }
+        if (shotEy1 > 480)
+            shotEFlag1 = false;
+        ellipse(shotEx1, shotEy1, shotEr, shotEr);
+    }
+    ///
 }
 //------------------------------------------------------
 
