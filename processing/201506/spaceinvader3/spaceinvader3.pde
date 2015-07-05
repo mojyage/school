@@ -14,35 +14,40 @@ boolean moveLeft = false;
 boolean moveRight = false;
 boolean shotPFlag = false;
 
-//-----------enemy0-------
+//-----------enemy common-------
 PImage img;
-int enemyX0 = 40;
-int enemyY0 = 30;
 int enemyR = 40;
-int moveEVx0 = 10;
 int moveEVy = 30;
 int moveCount = 0;
+//shot
+int shotEr = 7;
+int shotEVx = 0;
+int shotEVy = 5;
+int shotECount = 0;
+//-----------enemy0-------
+int enemyX0 = 40;
+int enemyY0 = 30;
+int moveEVx0 = 10;
 boolean enemyFlag0 = true;
-
+//enemy0 shot
+int shotEx0;
+int shotEy0;
+boolean shotEFlag0 = false;
 //-----------enemy1-------
 int enemyX1 = 90;
 int enemyY1 = 30;
 int moveEVx1 = 10;
 boolean enemyFlag1 = true;
-
-//enemy0 shot
-int shotEx0 = enemyX0;
-int shotEy0 = enemyY0;
-int shotEr = 7;
-int shotEVx = 0;
-int shotEVy = 5;
-int shotECount = 0;
-boolean shotEFlag0 = false;
-
 //enemy1 shot
-int shotEx1 = enemyX1;
-int shotEy1 = enemyY1;
+int shotEx1;
+int shotEy1;
 boolean shotEFlag1 = false;
+
+// opening ending
+boolean openingFlag = true;
+boolean endingFlag = false;
+int opSelectedItem = 0;
+int edSelectedItem = 0;
 
 void setup() {
   size(480, 480);
@@ -53,6 +58,31 @@ void setup() {
   frameRate(50);
   myFont = createFont("MS Gothic", 24, true);
   img = loadImage("enemy.png");
+
+  initValues();
+}
+
+void initValues() {
+  moveCount = 0;
+  // player
+  playerX = 240;
+  playerY = 400;
+  playerFlag = true;
+  moveLeft = false;
+  moveRight = false;
+  shotPFlag = false;
+  // enemy0
+  enemyX0 = 40;
+  enemyY0 = 30;
+  moveEVx0 = 10;
+  enemyFlag0 = true;
+  shotEFlag0 = false;
+  // enemy1
+  enemyX1 = 90;
+  enemyY1 = 30;
+  moveEVx1 = 10;
+  enemyFlag1 = true;
+  shotEFlag1 = false;
 }
 
 //------------------------
@@ -92,7 +122,7 @@ void playerShot() {
       shotEFlag1 = false;
     }
 
-    if (shotPy < 0){
+    if (shotPy < 0) {
       shotPFlag = false;
     }
     ellipse(shotPx, shotPy, shotPr, shotPr);
@@ -158,7 +188,7 @@ void enemyShot() {
       shotEFlag0 = false;
       shotPFlag = false;
     }
-    if (shotEy0 > 480){
+    if (shotEy0 > 480) {
       shotEFlag0 = false;
     }
     ellipse(shotEx0, shotEy0, shotEr, shotEr);
@@ -172,8 +202,9 @@ void enemyShot() {
       shotEFlag1 = false;
       shotPFlag = false;
     }
-    if (shotEy1 > 480)
+    if (shotEy1 > 480) {
       shotEFlag1 = false;
+    }
     ellipse(shotEx1, shotEy1, shotEr, shotEr);
   }
 }
@@ -181,30 +212,105 @@ void enemyShot() {
 
 void draw() {
   background(0);
-  playerMove();
-  playerShot();
-  enemyMove();
-  enemyShot();
+  if (openingFlag) {
+    opening();
+  } else if (playerFlag == false) {
+    endingFlag = true;
+    ending();
+  } else if (enemyFlag0 == false && enemyFlag0 == false) {
+    endingFlag = true;
+    ending();
+  } else {
+    playerMove();
+    playerShot();
+    enemyMove();
+    enemyShot();
+    printPlayTime();
+  }
+}
+
+void printPlayTime() {
+  textSize(32);
+  fill(255);
+  text("time : " +moveCount, width - 200, height - 30);
+}
+
+void opening() {
+  textSize(32);
+  fill(255);
+  text("invader", 10, 30);
+
+  text("->", 10, 300 + 30 * opSelectedItem);
+  text("start", 60, 300);
+  text("end", 60, 330);
+}
+
+void ending() {
+  textSize(32);
+  fill(255);
+  if (playerFlag == false) {
+    text("your died", 10, 30);
+    text("play time : " + moveCount, 10, 100);
+  } else if (enemyFlag0 == false || enemyFlag1 == false) {
+    text("enemy down!", 10, 30);
+    text("play time : " + moveCount, 10, 100);
+  }
+  text("->", 10, 300 + 30 * edSelectedItem);
+  text("re start", 60, 300);
+  text("end", 60, 330);
 }
 
 void keyPressed() {
-  if (key == 'a' || keyCode == LEFT)
-    moveLeft = true;
-  if (key == 'd' || keyCode == RIGHT)
-    moveRight = true;
+  if (openingFlag) {
+    if (keyCode == ENTER) {
+      if (opSelectedItem == 0) {
+        openingFlag = false;
+      } else if (opSelectedItem == 1) {
+        exit();
+      }
+    }
+    if (keyCode == UP || keyCode == DOWN) {
+      opSelectedItem ++;
+      opSelectedItem %= 2;
+    }
+  } else if (endingFlag) {
+    if (keyCode == ENTER) {
+      if (edSelectedItem == 0) {
+        endingFlag = false;
 
-  if (!shotPFlag && playerFlag) {
-    if (key == 'f' || keyCode == UP)
-      shotPFlag = true;
-    shotPx = playerX;
-    shotPy = playerY;
+        setup();
+      } else if (edSelectedItem == 1) {
+        exit();
+      }
+    }
+    if (keyCode == UP || keyCode == DOWN) {
+      edSelectedItem ++;
+      edSelectedItem %= 2;
+    }
+  } else {
+    if (key == 'a' || keyCode == LEFT) {
+      moveLeft = true;
+    }
+    if (key == 'd' || keyCode == RIGHT) {
+      moveRight = true;
+    }
+
+    if (!shotPFlag && playerFlag) {
+      if (key == 'f' || keyCode == UP) {
+        shotPFlag = true;
+      }
+      shotPx = playerX;
+      shotPy = playerY;
+    }
   }
 }
 
 void keyReleased() {
-  if (key == 'a' || keyCode == LEFT)
+  if (key == 'a' || keyCode == LEFT) {
     moveLeft = false;
-  if (key == 'd' || keyCode == RIGHT)
+  }
+  if (key == 'd' || keyCode == RIGHT) {
     moveRight = false;
+  }
 }
 
