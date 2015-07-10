@@ -1,0 +1,326 @@
+PFont myFont;
+//-----------player-----
+int playerX = 240;
+int playerY = 400;
+int playerSize = 20;
+//shot
+int shotPx = playerX;
+int shotPy = playerY;
+int shotPVy = -5;
+int shotPr = 7;
+//flag
+boolean playerFlag = true;
+boolean moveLeft = false;
+boolean moveRight = false;
+boolean shotPFlag = false;
+
+//-----------enemy common-------
+//敵に共通する変数を分割した
+PImage img;//画像
+int enemyR = 40;//敵の半径
+int moveEVy = 30;//敵が縦に動く大きさ
+int moveCount = 0;//敵が動いたら増える数
+//shot//弾
+int shotEr = 7;//弾の半径
+int shotEVx = 0;//弾が横に動く大きさ
+int shotEVy = 5;//弾が縦に動く大きさ
+int shotECount = 0;
+//-----------enemy0-------
+int enemyX0 = 40;//敵0の出現x座標
+int enemyY0 = 30;//敵0の出現y座標
+int moveEVx0 = 10;//敵0の横に動く大きさ
+boolean enemyFlag0 = true;//敵0の生き死にを判断するフラグ
+//enemy0 shot
+int shotEx0;//敵0の弾のx座標
+int shotEy0;//敵0の弾のy座標
+boolean shotEFlag0 = false;//敵0が弾を撃っているかどうかのフラグ
+//-----------enemy1-------
+int enemyX1 = 90;//敵1の出現x座標
+int enemyY1 = 30;//敵1の出現y座標
+int moveEVx1 = 10;//敵1の横に動く大きさ
+boolean enemyFlag1 = true;//敵1の生き死にを判断するフラグ
+//enemy1 shot
+int shotEx1;//敵1の弾のx座標
+int shotEy1;//敵1の弾のy座標
+boolean shotEFlag1 = false;//敵1が弾を撃っているかどうかのフラグ
+
+// opening ending
+boolean openingFlag = true;//オープニング画面を表示するかのフラグ
+boolean endingFlag = false;//エンディング画面を表示するかのフラグ
+int opSelectedItem = 0;//オープニング画面で選択されている項目を識別する数
+int edSelectedItem = 0;//エンディング画面で選択されている項目を識別する数
+
+void setup() {
+  size(480, 480);//画面の縦幅，横幅を設定
+  background(0);//背景を黒に塗る
+  fill(0, 0, 0);//これから描かれる図形を黒に塗る
+  smooth();//線はきれいに描く
+  noStroke();//枠線は描かない
+  frameRate(50);//フレームレートを50に設定
+  myFont = createFont("MS Gothic", 24, true);//文字フォントをMSゴシック 24ポイントに設定
+  img = loadImage("enemy.png");//敵の画像を読み込む
+
+  initValues();//初期値を設定する関数を呼ぶ
+}
+
+void initValues() {
+  moveCount = 0;//敵が動いた数を0にする
+  // player
+  playerX = 240;//自機のx座標を設定
+  playerY = 400;//自機のy座標を設定
+  playerFlag = true;//プレイヤーは生きている設定にする
+  moveLeft = false;//プレイヤーは左に動いていない
+  moveRight = false;//プレイヤーは右に動いていない
+  shotPFlag = false;//プレイヤーは弾を撃っていない
+  // enemy0
+  enemyX0 = 40;//敵0のx座標を設定
+  enemyY0 = 30;//敵0のy座標を設定
+  moveEVx0 = 10;//敵0のx軸に動く量を設定
+  enemyFlag0 = true;//敵0は生きている
+  shotEFlag0 = false;//敵0は弾を撃っていない
+  // enemy1
+  enemyX1 = 90;//敵1のx座標を設定
+  enemyY1 = 30;//敵1のy座標を設定
+  moveEVx1 = 10;//敵1のx軸に動く量を設定
+  enemyFlag1 = true;//敵1は生きている
+  shotEFlag1 = false;//敵1は弾を撃っていない
+}
+
+//------------------------
+//あたり判定
+boolean collisionCheck(int myX, int myY, int myR, int youX, int youY, int youR) {
+  return (pow(myX - youX, 2) + pow(myY - youY, 2)) <= pow(myR / 2 + youR / 2, 2);
+}
+
+//-----------PLAYER--------------------------------
+void playerMove() {
+  if (playerFlag) {
+    if (moveLeft) {
+      playerX -= 7;
+    }
+    if (moveRight) {
+      playerX += 7;
+    } 
+    fill(255);
+    ellipse(playerX, playerY, playerSize, playerSize);
+  }
+}
+
+void playerShot() {
+  fill(255, 0, 0);
+  if (shotPFlag) {
+    shotPy += shotPVy;
+    // atarihantei enemy0
+    //プレイヤーの弾と敵0とのあたり判定を調べる
+    if (collisionCheck(shotPx, shotPy, shotPr, enemyX0, enemyY0, enemyR)) {
+      shotPFlag = false;
+      enemyFlag0 = false;  
+      shotEFlag0 = false;
+    }
+
+    // atarihantei enemy1
+    //プレイヤーの弾と敵1とのあたり判定を調べる
+    if (collisionCheck(shotPx, shotPy, shotPr, enemyX1, enemyY1, enemyR)) {
+      shotPFlag = false;
+      enemyFlag1 = false;  
+      shotEFlag1 = false;
+    }
+
+    if (shotPy < 0) {
+      shotPFlag = false;
+    }
+    ellipse(shotPx, shotPy, shotPr, shotPr);
+  }
+} 
+//----------------------------------------------
+
+//-------------------ENEMY------------------------
+void enemyMove() {
+  // enemy0
+  if (enemyFlag0) {//敵0が生きているならば
+    if (moveCount % 10 == 0) {//カウントは10で割り切れるならば
+      enemyX0 += moveEVx0;//横に動く
+      if (enemyX0 < 20 || 460 < enemyX0) {//横20以下または460以上ならば
+        enemyY0 += moveEVy;//縦に動く
+        enemyX0 -= moveEVx0;//横移動をキャンセル
+        moveEVx0 *= -1;//横に動く方向を逆転させる
+      }
+    }
+    fill(0, 255, 0);    //緑に塗る
+    image(img, enemyX0 - (enemyR / 2), enemyY0 - enemyR / 2, enemyR, enemyR);//敵画像を表示
+  }
+
+  // enemy1
+  if (enemyFlag1) {//敵0が生きているならば
+    if (moveCount % 10 == 0) {//カウントは10で割り切れるならば
+      enemyX1 += moveEVx1;//横に動く
+      if (enemyX1 < 20 || 460 < enemyX1) {//横20以下または460以上ならば
+        enemyY1 += moveEVy;//縦に動く
+        enemyX1 -= moveEVx1;//横移動をキャンセル
+        moveEVx1 *= -1;//横に動く方向を逆転させる
+      }
+    }
+    fill(0, 255, 0);    //緑に塗る
+    image(img, enemyX1 - (enemyR / 2), enemyY1 - enemyR / 2, enemyR, enemyR);//敵画像を表示
+  }
+
+  if (enemyFlag0 || enemyFlag1) {//敵0か敵1が生きていれば
+    moveCount++;カウントを1増やす
+  }
+}
+
+void enemyShot() {
+  // enemy0 shot
+  //弾のカウンタを計算する前に1足してから35で割ったあまりが0と等しく
+  //敵0が生きていて，敵0が弾を撃っていないならば
+  if ((shotECount = ++shotECount % 35) == 0 && enemyFlag0 && !shotEFlag0) {
+    shotEFlag0 = true;//弾を撃つ
+    shotEx0 = enemyX0;//弾の座標に敵0のx座標をあげる
+    shotEy0 = enemyY0;//弾の座標に敵0のy座標をあげる
+  }
+
+  // enemy shot1
+  //弾のカウンタを計算する前に1足してから35で割ったあまりが0と等しく
+  //敵1が生きていて，敵1が弾を撃っていないならば
+  if ((shotECount = ++shotECount % 35) == 0 && enemyFlag1 && !shotEFlag1) {
+    shotEFlag1 = true;//弾を撃つ
+    shotEx1 = enemyX1;//弾の座標に敵0のx座標をあげる
+    shotEy1 = enemyY1;//弾の座標に敵0のy座標をあげる
+  }
+
+  // atarihantei enemy shot0
+  if (shotEFlag0) {//敵0の弾が発射されていたら
+    shotEy0 += shotEVy;//弾を縦に動かして
+    if (collisionCheck(shotEx0, shotEy0, shotEr, playerX, playerY, playerSize)) {//自機にあたっていたら
+      playerFlag = false;//自機は死ぬ
+      shotEFlag0 = false;//敵0の弾を消す
+      shotPFlag = false;//自機の弾を消す
+    }
+    if (shotEy0 > 480) {//弾のy座標が480を超えていたら
+      shotEFlag0 = false;//弾を消す
+    }
+    ellipse(shotEx0, shotEy0, shotEr, shotEr);//弾を描画
+  }
+
+  // atarihantei enemy shot1
+  if (shotEFlag1) {//敵1の弾が発射されていたら
+    shotEy1 += shotEVy;//弾を縦に動かして
+    if (collisionCheck(shotEx1, shotEy1, shotEr, playerX, playerY, playerSize)) {//自機にあたっていたら
+      playerFlag = false;//自機は死ぬ
+      shotEFlag1 = false;//敵1の弾を消す
+      shotPFlag = false;//自機の弾を消す
+    }
+    if (shotEy1 > 480) {//弾のy座標が480を超えていたら
+      shotEFlag1 = false;//弾を消す
+    }
+    ellipse(shotEx1, shotEy1, shotEr, shotEr);//弾を描画
+  }
+}
+//------------------------------------------------------
+
+void draw() {
+  background(0);//背景を黒に塗る
+  if (openingFlag) {//オープニングフラグがtrueならば
+    opening();//オープニングを見せ続ける
+  } else if (playerFlag == false) {//プレイヤーが死んじゃったら
+    endingFlag = true;
+    ending();//エンディングを見せ続ける
+  } else if (enemyFlag0 == false && enemyFlag0 == false) {//敵の両方が死んじゃったら
+    endingFlag = true;
+    ending();//エンディングを見せ続ける
+  } else {
+    playerMove();//自機を動かす
+    playerShot();//自機の弾を撃つ
+    enemyMove();//敵を動かす
+    enemyShot();//敵の弾を撃つ
+    printPlayTime();//プレイ時間を表示する
+  }
+}
+
+void printPlayTime() {//プレイ時間を表示する
+  textSize(32);//テキストのサイズを32にする
+  fill(255);//白に塗りつぶす
+  text("time : " +moveCount, width - 200, height - 30);//文字をちょうどいい位置に出す
+}
+
+void opening() {//オープニング画面を出す
+  textSize(32);//テキストのサイズを32にする
+  fill(255);//黒に塗りつぶす
+  text("invader", 10, 30);//インベーダーゲームです
+  text("user guide",10,90);//ユーザーガイドです
+  text("UP:shot",40,130);//上ボタンで弾を撃ちます
+  text("RIGHT,LEFT:move",40,160);//左右ボタンで動けます
+  text("ENTER:decide",40,190);//エンターキーで決定です
+  text("->", 10, 300 + 30 * opSelectedItem);//今は何かを選択している
+  text("start", 60, 300);//ゲームを始める
+  text("end", 60, 330);//ゲームを終わる
+}
+
+void ending() {//エンディング画面を出す
+  textSize(32);//テキストのサイズを32にする
+  fill(255);//黒に塗りつぶす
+  if (playerFlag == false) {//自機が死んじゃったら
+    text("your died", 10, 30);//あなたは死んだ
+    text("play time : " + moveCount, 10, 100);//プレイタイムを表示
+  } else if (enemyFlag0 == false || enemyFlag1 == false) {//敵をやっつけたら
+    text("enemy down!", 10, 30);//敵をやっつけた
+    text("play time : " + moveCount, 10, 100);//プレイタイムを表示
+  }
+  text("->", 10, 300 + 30 * edSelectedItem);//今は何かを選択している
+  text("re start", 60, 300);//もう一回ゲームを始める
+  text("end", 60, 330);//ゲームを終了する
+}
+
+void keyPressed() {
+  if (openingFlag) {//オープニング画面の時
+    if (keyCode == ENTER) {//エンターキーが押されたら
+      if (opSelectedItem == 0) {//選択されているのがスタートなら
+        openingFlag = false;//オープニング画面をやめてゲームを開始する
+      } else if (opSelectedItem == 1) {//終了が選択されていたら
+        exit();//終了する
+      }
+    }
+    if (keyCode == UP || keyCode == DOWN) {//上下ボタンが押されたならば
+      opSelectedItem ++;//選択されている項目をずらす
+      opSelectedItem %= 2;
+    }
+  } else if (endingFlag) {//エンディング画面の時
+    if (keyCode == ENTER) {//エンターキーが押されたら
+      if (edSelectedItem == 0) {//選択されているのがリスタートなら
+        endingFlag = false;//エンディング画面をやめて
+
+        setup();//セットアップをもう一回呼ぶ
+      } else if (edSelectedItem == 1) {//終了が選択されていたら
+        exit();//終了する
+      }
+    }
+    if (keyCode == UP || keyCode == DOWN) {//上下ボタンが押されたならば
+      edSelectedItem ++;//選択されている項目をずらす
+      edSelectedItem %= 2;
+    }
+  } else {//ゲーム中ならば
+    if (key == 'a' || keyCode == LEFT) {//aまたは左が押されているならば
+      moveLeft = true;//左に動き続ける
+    }
+    if (key == 'd' || keyCode == RIGHT) {//dまたは右が押されているならば
+      moveRight = true;//右に動き続ける
+    }
+
+    if (!shotPFlag && playerFlag) {//自機が弾を撃っていなくて，生きているとき
+      if (key == 'f' || keyCode == UP) {//fまたは上が押されたら
+        shotPFlag = true;//弾を撃つ
+      }
+      shotPx = playerX;//弾には自機のx座標を渡す
+      shotPy = playerY;//弾には自機のy座標を渡す
+    }
+  }
+}
+
+void keyReleased() {
+  if (key == 'a' || keyCode == LEFT) {
+    moveLeft = false;
+  }
+  if (key == 'd' || keyCode == RIGHT) {
+    moveRight = false;
+  }
+}
