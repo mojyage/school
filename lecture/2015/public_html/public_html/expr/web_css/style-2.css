@@ -1,0 +1,123 @@
+@charset "utf-8";
+
+
+/*--------------------------------------
+  Structure Module
+---------------------------------------*/
+
+body {
+	background-image: url("./image/castle.jpg"); 
+	background-position: right bottom;  /* 画像表示位置（右下） */
+	background-repeat: no-repeat;  /* 画像表示方法（繰り返し無し） */
+	background-attachment: fixed;  /* 画像固定 */
+}
+/*--------------------------------------
+  Text Module
+---------------------------------------*/
+h1 {
+	font-size:250%;
+	text-align:center;
+	padding-top: 50px;
+	background-image: url("./image/title.png");  /* 背景に呼び出す画像URL */
+	background-position: center top;  /* 背景画像の位置 */
+	background-repeat: no-repeat;  /* 背景画像の表示方法 */
+}
+
+h2 {
+	margin-top:50px;  /* 余白（上部）*/
+	margin-bottom:20px;  /* 余白（下部）*/
+	padding:5px 15px;  /* 空白領域（上下　左右）*/
+	background:#f5f5f5;  /* 背景色 */
+	border-left:#333399 8px solid;  /* 枠線（左部）色 スタイル（直線）*/
+	font-size: 160%;  /* 文字のサイズ（相対指定） */
+	font-weight: bold;  /* 文字の太さ */
+	color:#666666;  /* 文字の色 */
+}
+
+h3 {
+	font-size: 120%;
+	margin: 1rem 1rem;  /* 余白（上下　左右を相対指定）*/
+}
+
+h3:first-letter {  /* 最初の文字を指定 */
+	color: #333366;
+	font-size: 150%;
+}
+
+table {
+	border: medium solid #2f4f4f;  /* 枠線の装飾 */
+	margin: 1rem 3rem;
+}
+
+th, td {
+	border: thin solid #2f4f4f;
+	padding: 0.1rem 0.5rem;
+}
+
+th {
+	color: #ffffff;
+	background-color: #008080;
+}
+
+p {
+	padding: 1rem 2rem;
+	line-height: 1rem;  /* 行間の設定 */
+}
+
+ol, ul {
+	padding: 1rem 4rem;
+}
+
+li {
+	line-height: 1.8rem;
+}
+
+address {
+	padding: 1rem 2rem;
+	font-style: normal;  /* 文字のスタイル（標準） */
+	text-align: right;
+}
+
+a:link {  /* リンク（クリック前） */
+	color:#3366ff;
+	text-decoration:none;  /* 文字の飾り（無し） */
+}
+
+a:visited {  /* リンク（クリック後） */
+	color:#666666;
+	text-decoration:none;
+}
+
+a:hover {  /* リンク（カーソルオン） */
+	color:#ff66ff;
+	text-decoration:underline;  /* 文字の飾り（下線） */
+}
+
+
+
+/*--------------------------------------
+  MENU 
+---------------------------------------*/
+
+
+
+
+
+/* ClearFix */
+
+.menu ul {
+	height: 1px;
+	min-height: 1px;
+	/*¥*//*/
+	height: 1px;
+	overflow: hidden;
+	/**/
+}
+
+.menu ul :after {
+	height: 0;
+	visibility: hidden;
+	content: ".";
+	display: block;
+	clear: both;
+}

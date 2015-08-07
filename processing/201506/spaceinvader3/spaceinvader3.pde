@@ -239,10 +239,12 @@ void opening() {
   textSize(32);
   fill(255);
   text("invader", 10, 30);
+  textSize(20);
   text("user guide",10,90);
   text("UP:shot",40,130);
   text("RIGHT,LEFT:move",40,160);
   text("ENTER:decide",40,190);
+  textSize(32);
   text("->", 10, 300 + 30 * opSelectedItem);
   text("start", 60, 300);
   text("end", 60, 330);
