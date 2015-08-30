@@ -1,65 +1,55 @@
 ﻿@charset "utf-8";
 /* CSS Document */
 
-
 #container {
-          width:800px;
-          margin:0 auto;
-		  border-top:7px solid  #2f4f4f;
-} 
-
-
-h1{
-    margin: 0 0 1.5em;
-    padding: 0.8em;
-    font-size: 2.143em;
-    font-weight: bold;
-    border-top: 1px dashed #aaa;
-    border-bottom: 1px dashed #aaa;
-    background: #eee;
-    text-shadow: 1px 1px 0 rgba(255,255,255,1);
-    box-shadow: 0 5px 4px -4px rgba(0,0,0,0.3) inset;
-    -moz-box-shadow: 0 5px 4px -4px rgba(0,0,0,0.3) inset;
-    -webkit-box-shadow: 0 5px 4px -4px rgba(0,0,0,0.3) inset;
-    -o-box-shadow: 0 5px 4px -4px rgba(0,0,0,0.3) inset;
-    -ms-box-shadow: 0 5px 4px -4px rgba(0,0,0,0.3) inset;
+    width      : 800px;
+    margin     : 0 auto;
+    border-top : 7px solid #2f4f4f;
 }
 
-
-
-
+h1 {
+    margin             : 0 0 1.5em;
+    padding            : 0.8em;
+    font-size          : 2.143em;
+    font-weight        : bold;
+    border-top         : 1px dashed #aaa;
+    border-bottom      : 1px dashed #aaa;
+    background         : #eee;
+    text-shadow        : 1px 1px 0 rgba(255, 255, 255, 1);
+    box-shadow         : 0 5px 4px -4px rgba(0, 0, 0, 0.3) inset;
+    -moz-box-shadow    : 0 5px 4px -4px rgba(0, 0, 0, 0.3) inset;
+    -webkit-box-shadow : 0 5px 4px -4px rgba(0, 0, 0, 0.3) inset;
+    -o-box-shadow      : 0 5px 4px -4px rgba(0, 0, 0, 0.3) inset;
+    -ms-box-shadow     : 0 5px 4px -4px rgba(0, 0, 0, 0.3) inset;
+}
 
 p {
-	padding: 0.4rem 0.5rem;
-	line-height: 0.1rem;  /* 行間の設定 */
+    padding     : 0.4rem 0.5rem;
+    line-height : 0.1rem; /* 行間の設定 */
 }
 
-
-
-
-
 ol, ul {
-	padding: 0.3rem 4rem;
+    padding : 0.3rem 4rem;
 }
 
 li {
-	line-height: 2.8rem;
+    line-height : 2.8rem;
 }
 
-
-
-
-a:link {  /* リンク（クリック前） */
-	color:#3366ff;
-	text-decoration:none;  /* 文字の飾り（無し） */
+a:link {
+    /* リンク（クリック前） */
+    color           : #3366ff;
+    text-decoration : none; /* 文字の飾り（無し） */
 }
 
-a:visited {  /* リンク（クリック後） */
-	color:#666666;
-	text-decoration:none;
+a:visited {
+    /* リンク（クリック後） */
+    color           : #666666;
+    text-decoration : none;
 }
 
-a:hover {  /* リンク（カーソルオン） */
-	color:#006666;
-	text-decoration:underline;  /* 文字の飾り（下線） */
+a:hover {
+    /* リンク（カーソルオン） */
+    color           : #006666;
+    text-decoration : underline; /* 文字の飾り（下線） */
 }
