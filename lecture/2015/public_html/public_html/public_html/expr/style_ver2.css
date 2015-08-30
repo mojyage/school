@@ -13,7 +13,7 @@ body {
 #container {
 	width:800px;
 	margin:0 auto;
-     border-top:7px solid  #2f4f4f;
+     border-top:7px solid  #fff;
 }
 
 
@@ -92,7 +92,7 @@ nav ul img {
 }
 
 nav ul img:hover {
-    
+    opacity: 0.5
 }
 
 
