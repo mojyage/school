@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document */
+
+h1 {
+	font-size:200%;
+	text-align:center;
+	padding-top: 90px;
+	background-position: center top;
+	background-repeat: no-repeat;
+	color:#2fAA00;
+}
+
+
+a:link {
+	color:#555;
+	text-decoration:none;
+}
+
+a:visited {
+	color:#669;
+	text-decoration:none;
+}
+
+a:hover {
+	color:#f60;
+	text-decoration:underline;
+}
+
+a{	
+	text-align:center;
+	padding-top: 90px;
+	background-position: center top;
+	background-repeat: no-repeat;
+	color:#2fAA00;
+}
