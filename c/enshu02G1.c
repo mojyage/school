@@ -22,7 +22,7 @@ int main(){
 	// 円の中にいる点の割合
 	double ratio = 0;
 
-	// 乱数を初期化
+	// 乱数を実行時の時間で初期化
 	srand((unsigned)time(NULL));
 
 	for(i = 0; i < dotsNum; i++) {
