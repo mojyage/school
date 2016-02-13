@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document */
+
+h1 {
+    font-size           : 450%;
+    text-align          : center;
+    padding-top         : 20px;
+    background-position : center top;
+    background-repeat   : no-repeat;
+    color               : #008080;
+}
+
+ol#topicpath{
+    margin: 0 0 40px 0;
+    text-align: left;
+    list-style-type: none;
+}
+ol#topicpath li{
+    display: inline;
+    list-style-type: none;
+}
