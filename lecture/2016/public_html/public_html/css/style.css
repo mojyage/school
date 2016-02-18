@@ -1,0 +1,80 @@
+@charset "utf-8";
+/* CSS Document */
+
+h1 {
+    font-size           : 200%;
+    text-align          : center;
+    padding-top         : 90px;
+    background-position : center top;
+    background-repeat   : no-repeat;
+    color               : #ffffff;
+}
+
+h2 {
+    font-size           : 150%;
+    padding-top         : 40px;
+    background-position : center top;
+    background-repeat   : no-repeat;
+    color               : #ffffff;
+}
+
+ol, ul {
+    padding : 0.3rem 4rem;
+}
+
+li {
+    line-height : 0.1rem;
+    color       : #2f4f4f;
+}
+
+p {
+    line-height : 4em; /* 行間の設定 */
+}
+
+body {
+    margin                : 0;
+    padding               : 0;
+    background            : #000000;
+    background-image      : url("../image/fire work.jpg");
+    background-position   : center bottom;
+    background-repeat     : no-repeat;
+    background-attachment : fixed;
+}
+
+#container {
+    width      : 800px;
+    margin     : 0 auto;
+    border-top : 7px solid #2f4f4f;
+}
+
+/* 参考 : http://www.tagindex.com/stylesheet/link/color.html */
+a:link {
+    text-align      : center;
+    color           : #ffffff;
+    text-decoration : none;
+    font-size       : 100px;
+}
+
+/*未訪問のリンク*/
+a:visited {
+    text-align      : center;
+    color           : #ffffff;
+    text-decoration : none;
+}
+
+/*訪問済みのリンク*/
+a:hover {
+    text-align      : center;
+    color           : #ffffff;
+    text-decoration : underline;
+}
+
+/*ポイント時のリンク*/
+a:active {
+    text-align      : center;
+    color           : #ffffff;
+    text-decoration : none;
+}
+
+
+

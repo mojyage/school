@@ -1,0 +1,32 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+/* 題名（多摩区） */
+h1{
+    color               : #f09199
+}
+
+/* 題名（街の人の声） */
+h2{
+    color: #CD853F
+}
+
+/* 背景 */
+.backImage{
+    height:600px;
+    width:auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("../spring/image/生田緑地.jpg")
+}
+body{
+    background-color: beige;
+}
+
+/* ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー */
+/* 街の人の声の塊 */
+.interview{
+    background-color: rgba(255,255,255,0.7);
+    position:absolute; top:310px; right:20px;
+}

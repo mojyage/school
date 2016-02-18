@@ -1,0 +1,24 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* 題名（見る） */
+h1{
+    color: #fff
+}
+
+/* 店名の装飾 */
+h2{
+    text-align: center;
+    color:#fff
+}
+.title{
+    background-color:#84b9cb
+}
+
+/* 背景 */
+body{
+    height:auto;
+    width:auto;
+    background-position: center;
+    background-image: url("../spring/image/質感.jpeg")
+}
